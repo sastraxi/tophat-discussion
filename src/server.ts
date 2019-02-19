@@ -6,6 +6,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 
 import knex from './knex';
+import getComments from './routes/get-comments';
+import newComment from './routes/new-comment';
 
 if (!process.env.SESSION_SECRET) {
   console.error('Please prove a SESSION_SECRET in your .env file.');
@@ -32,6 +34,8 @@ app.use(
   }),
 );
 
+knex.migrate.latest();
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -40,6 +44,9 @@ app.get('/', (req, res) => {
     status: 'Ready to build something awesome?',
   });
 });
+
+app.get('/comments', getComments);
+app.post('/comments', newComment);
 
 const port = process.env.PORT || 3000;
 app.listen(port , () =>
