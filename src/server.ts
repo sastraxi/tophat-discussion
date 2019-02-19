@@ -34,7 +34,11 @@ app.use(
   }),
 );
 
-knex.migrate.latest();
+knex.migrate.latest()
+  .catch((err) => {
+    console.error("Could not ensure database was at the highest migration.", err);
+    process.exit(1);  
+  });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -14,9 +14,9 @@ interface RequestBody {
 export default async (req: Express.Request, res: Express.Response) => {
   const options: RequestBody = req.body;
 
-  if (!options.comment) {
+  if (!options.comment || options.comment !== `${options.comment}`) {
     return res.status(400).send({
-      message: 'Request body must have a "comment".',
+      message: 'Request body must have a string "comment".',
     });
   }
 
